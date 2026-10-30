@@ -7,7 +7,7 @@ import MLStyle
 import SciMLBase
 import Compat: @compat
 
-@compat public QualitativeNetwork, QN, interpret
+@compat public QualitativeNetwork, QN, interpret, entities
 
 """
     $(TYPEDEF)
@@ -78,13 +78,14 @@ function QualitativeNetwork{GraphType}(
     entity_keys = collect(keys(update_functions))
     entity_fns = getindex.((update_functions,), entity_keys)
     entity_domains = getindex.((domains,), entity_keys)
-    get_arguments_or_empty = x -> TI.isexpr(x) ? (x, TI.arguments(x)) : (x, ())
-    collect_arguments =
-        x ->
-        AT.treemap(get_arguments_or_empty, x) |>
-        (x -> AT.PreOrderDFS(x -> !(AT.nodevalue(x) in entity_keys), x)) .|>
-        AT.nodevalue |>
-        filter(in(entity_keys))
+    # get_arguments_or_empty = x -> TI.isexpr(x) ? (x, TI.arguments(x)) : (x, ())
+    collect_arguments = x -> filter(in(entity_keys), AT.nodevalue.(AT.Leaves(x)))
+    # collect_arguments =
+    #     x ->
+    #     AT.treemap(get_arguments_or_empty, x) |>
+    #     (x -> AT.PreOrderDFS(x -> !(AT.nodevalue(x) in entity_keys), x)) .|>
+    #     AT.nodevalue |>
+    #     filter(in(entity_keys))
 
     referenced_entities = union.(collect_arguments.(entity_fns))
     referenced_indices =
@@ -93,6 +94,9 @@ function QualitativeNetwork{GraphType}(
         Iterators.flatten(
         map(((j, idxs),) -> tuple.(idxs, (j,)), enumerate(referenced_indices)),
     ) |> collect
+    if isempty(edges) && !isempty(entity_keys)
+        @warn "Creating a QN with no edges" entity_keys
+    end
     graph = GraphType()
     Graphs.add_vertices!(graph, length(entity_keys))
     Graphs.add_edge!.((graph,), Graphs.Edge.(edges))
