@@ -20,7 +20,13 @@ jobs:
         steps:
             - name: Clone
               uses: actions/checkout@v7
-            - uses: j178/prek-action@v2
+            - name: Setup Julia
+              uses: julia-actions/setup-julia@da908477b5db94c10ffce8cfea9f2b3b9d5db687
+              with:
+                  version: "1"
+            - uses: julia-actions/cache@9353db09a0f2bbbdec6f41791918c75d37391b36
+            - name: Prek
+              uses: j178/prek-action@44924fe9ef4a6f88253c4b6b1bf11c689d3ce53d
               with:
                   extra-args: "--all-files --skip no-commit-to-branch"
 
