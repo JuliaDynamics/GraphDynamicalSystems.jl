@@ -9,7 +9,7 @@ repos:
             language: fail
             files: "\\.rej$"
     - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v6.0.0
+      rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c # frozen: v6.0.0
       hooks:
           - id: check-json
           - id: check-toml
@@ -27,7 +27,7 @@ repos:
           - id: check-merge-conflict
             args: [--assume-in-merge]
     - repo: https://github.com/igorshubovych/markdownlint-cli
-      rev: v0.50.0
+      rev: cbcdc463be5464e25e3e955a511599a67b9b987f # frozen: v0.50.0
       hooks:
           - id: markdownlint-fix
     - repo: https://github.com/citation-file-format/cffconvert
@@ -35,13 +35,13 @@ repos:
       hooks:
           - id: validate-cff
     - repo: https://github.com/pre-commit/mirrors-prettier
-      rev: "v4.0.0-alpha.8" # Use the sha or tag you want to point at
+      rev: "f12edd9c7be1c20cfa42420fd0e6df71e42b51ea" # frozen: v4.0.0-alpha.8
       hooks:
           - id: prettier
             types_or: [yaml, json]
             exclude: ".copier-answers.yml"
     - repo: https://github.com/adrienverge/yamllint
-      rev: v1.38.0
+      rev: cba56bcde1fdd01c1deb3f945e69764c291a6530 # frozen: v1.38.0
       hooks:
           - id: yamllint
     - repo: https://github.com/fredrikekre/runic-pre-commit

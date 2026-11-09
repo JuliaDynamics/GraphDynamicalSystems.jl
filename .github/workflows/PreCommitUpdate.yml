@@ -12,20 +12,15 @@ jobs:
             contents: write
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v7
-            - name: Setup Python
-              uses: actions/setup-python@v7
-              with:
-                  cache: pip
-            - name: Install pre-commit
-              run: pip install pre-commit
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+            - uses: j178/prek-action@1382ad72dea72f9d53832f2bcb65b3e87a947204 # v3.0.1
             - name: Run pre-commit's autoupdate
               run: |
                   # ignore exit code
-                  pre-commit autoupdate || true
+                  prek auto-update --freeze --cooldown-days 7 || true
             - name: Create Pull Request
               id: cpr
-              uses: peter-evans/create-pull-request@v8
+              uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
               with:
                   commit-message: "chore: :robot: pre-commit update"
                   title: "[AUTO] pre-commit update"
